@@ -1,6 +1,29 @@
 import requests
 import random
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta 
+
+def get_recommendations(weather_data):
+    recommendations = {}
+
+    if weather_data['temperature'] < 10:
+        recommendations['outfit'] = "Heavy jacket, gloves, and a scarf."
+        recommendations['activities'] = ["Stay indoors with a book", "Watch movies", "Visit a museum."]
+    elif 10 <= weather_data['temperature'] < 20:
+        recommendations['outfit'] = "Sweater and comfortable jeans."
+        recommendations['activities'] = ["Go for a walk", "Visit a café", "Explore local attractions."]
+    elif weather_data['temperature'] >= 20:
+        recommendations['outfit'] = "T-shirt, shorts, and sunglasses."
+        recommendations['activities'] = ["Go to the beach", "Have a picnic", "Play outdoor sports."]
+    
+    if "Rain" in weather_data['description']:
+        recommendations['outfit'] += " Don't forget a raincoat or umbrella!"
+        recommendations['activities'] = ["Stay indoors and enjoy cozy activities", "Visit a spa."]
+    elif "Snow" in weather_data['description']:
+        recommendations['outfit'] += " Boots and thermal wear recommended!"
+        recommendations['activities'] = ["Build a snowman", "Go skiing or snowboarding."]
+    
+    return recommendations
+
 
 def get_weather_data(city, api_key):
     base_url = "http://api.weatherstack.com/current"

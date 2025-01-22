@@ -55,7 +55,7 @@
             color: #444;
         }
 
-        /* 5-Day Forecast Grid */
+        /* 7-Day Forecast Grid */
         .forecast-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -112,6 +112,29 @@
         .windy {
             background-color: #607d8b; /* Windy */
         }
+        /* Recommendations Button */
+        .recommendations-button {
+            margin: 20px 0;
+        }
+
+        .recommendations-button a {
+            text-decoration: none;
+        }
+
+        .recommendations-button button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .recommendations-button button:hover {
+            background-color: #45a049;
+        }
 
         /* Footer Section */
         footer {
@@ -128,11 +151,12 @@
 
     </style>
 </head>
-<body>
-
+<body> 
     <!-- Page Title -->
     <h1>Weather in {{ city }}</h1>
     
+   
+
     <!-- Today's Weather Section -->
     <div class="today {{ current_weather.description|lower }}">
         <h2>Today's Weather</h2>
@@ -155,6 +179,13 @@
         </div>
         {% endfor %}
     </div>
+    <div class="recommendations-button">
+        <a href="{% url 'recommendations' %}?city={{ city }}">
+            <button>Get Recommendations</button>
+        </a>
+    </div>
+    
+   
 
     <!-- Footer Section -->
     <footer>

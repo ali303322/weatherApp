@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
-from .utils import get_weather_data, get_weather_forecast
+from .utils import get_weather_data, get_weather_forecast,get_recommendations
 
 def weather_view(request):
     city = request.GET.get('city', 'Fes')  # Default city is London
@@ -22,7 +22,20 @@ def weather_view(request):
    
     return render(request, 'wrs/weather.html', context)
 
-  
+
+
+def recommendations_view(request):
+    city = request.GET.get('city', 'London')  # Default city
+    weather_data = get_weather_data(city, settings.WEATHER_API_KEY)
+    recommendations = get_recommendations(weather_data)
+
+    context = {
+        'city': city,
+        'weather_data': weather_data,
+        'recommendations': recommendations,
+    }
+    return render(request, 'wrs/recommendations.html', context)
+
 
 
 
