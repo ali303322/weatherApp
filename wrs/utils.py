@@ -1,10 +1,13 @@
 import requests
+import random
+from datetime import datetime, timedelta
 
 def get_weather_data(city, api_key):
     base_url = "http://api.weatherstack.com/current"
     params = {
         'access_key': api_key,
-        'query': city
+        'query': city,
+        'forecast_days': 5 
     }
     
     try:
@@ -25,3 +28,19 @@ def get_weather_data(city, api_key):
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
         return None
+
+
+
+def get_weather_forecast(current_weather):
+    forecast = []
+    today = datetime.now()
+
+    for i in range(1, 8):  # Simulate next 5 days
+        forecast_date = today + timedelta(days=i)
+        forecast.append({
+            'date': forecast_date.strftime('%Y-%m-%d'),
+            'temperature': current_weather['temperature'] + random.uniform(-3, 3),  # Variation
+            'description': current_weather['description'],  # Reuse today's description
+            'icon': current_weather['icon']  # Reuse today's icon
+        })
+    return forecast

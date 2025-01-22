@@ -1,40 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        img {
-            margin-top: 20px;
-            border: 2px solid #ddd;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
+    <title>Weather Forecast</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Today's Weather Section */
+        .today {
+            background-color: #ffcc00; /* Default for sunny weather */
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .today img {
+            width: 80px;
+            height: 80px;
+            margin-top: 10px;
+        }
+
+        .today h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .today p {
+            font-size: 1.2em;
+            margin: 5px 0;
+            color: #444;
+        }
+
+        /* 5-Day Forecast Grid */
+        .forecast-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 900px;
+            margin-top: 40px;
+        }
+
+        .forecast-day {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+        }
+
+        .forecast-day:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .forecast-day img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .forecast-day h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .forecast-day p {
+            font-size: 1.1em;
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .sunny {
+            background-color: #ffeb3b; /* Sunny */
+        }
+
+        .cloudy {
+            background-color: #cfcfcf; /* Cloudy */
+        }
+
+        .rainy {
+            background-color: #00bcd4; /* Rainy */
+        }
+
+        .windy {
+            background-color: #607d8b; /* Windy */
+        }
+
+        /* Footer Section */
+        footer {
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #777;
+            text-align: center;
+        }
+
+        footer a {
+            color: #333;
+            text-decoration: none;
+        }
+
+    </style>
 </head>
 <body>
+
+    <!-- Page Title -->
     <h1>Weather in {{ city }}</h1>
+    
+    <!-- Today's Weather Section -->
+    <div class="today {{ current_weather.description|lower }}">
+        <h2>Today's Weather</h2>
+        <p>Temperature: {{ current_weather.temperature }}°C</p>
+        <p>Description: {{ current_weather.description }}</p>
+        <p>Humidity: {{ current_weather.humidity }}%</p>
+        <p>Wind Speed: {{ current_weather.wind_speed }} km/h</p>
+        <img src="{{ current_weather.icon }}" alt="weather icon">
+    </div>
+    
+    <!-- 5-Day Forecast Grid -->
+    <div class="forecast-container">
+        <h2>7-Day Forecast</h2>
+        {% for day in weather_forecast %}
+        <div class="forecast-day {{ day.description|lower }}">
+            <h3>{{ day.date }}</h3>
+            <p>Temp: {{ day.temperature|floatformat:1 }}°C</p>
+            <p>{{ day.description }}</p>
+            <img src="{{ day.icon }}" alt="weather icon">
+        </div>
+        {% endfor %}
+    </div>
 
-    {% if weather_data %}
-        <p>Temperature: {{ weather_data.temperature }}°C</p>
-        <p>Description: {{ weather_data.description }}</p>
-        <p>Humidity: {{ weather_data.humidity }}%</p>
-        <p>Wind Speed: {{ weather_data.wind_speed }} km/h</p>
-        <img src="{{ weather_data.icon }}" alt="Weather Icon">
-    {% else %}
-        <p>Could not fetch weather data. Please try again later.</p>
-    {% endif %}
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 WeatherApp. <a href="/">Back to home</a></p>
+    </footer>
 
-    <form method="get">
-        <input type="text" name="city" placeholder="Enter city" required>
-        <button type="submit">Get Weather</button>
-    </form>
 </body>
 </html>
