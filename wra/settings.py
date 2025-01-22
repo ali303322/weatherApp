@@ -9,8 +9,21 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+from decouple import config
+
+WEATHER_API_KEY = config('WEATHER_API_KEY')
+
+
+from decouple import config
+
+WEATHER_API_KEY = config('WEATHER_API_KEY', default='8995e033b5f0b5fc6d3906f35633dacc')
+
+
+print("Template directories being searched:")
+print(os.environ['DJANGO_SETTINGS_MODULE'])
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,6 +65,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'wra.urls'
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+# To debug template loaders, add this
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -67,6 +85,10 @@ TEMPLATES = [
         },
     },
 ]
+
+# In case you want to debug template loading paths
+import django.template.loaders.app_directories
+
 
 WSGI_APPLICATION = 'wra.wsgi.application'
 
@@ -122,3 +144,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+</head>
+<body>
+    <h1>Weather in {{ city }}</h1>
+
+    {% if weather_data %}
+        <p>Temperature: {{ weather_data.temperature }}°C</p>
+        <p>Description: {{ weather_data.description }}</p>
+        <p>Humidity: {{ weather_data.humidity }}%</p>
+        <p>Wind Speed: {{ weather_data.wind_speed }} km/h</p>
+        <img src="{{ weather_data.icon }}" alt="Weather Icon">
+    {% else %}
+        <p>Could not fetch weather data. Please try again later.</p>
+    {% endif %}
+
+    <form method="get">
+        <input type="text" name="city" placeholder="Enter city" required>
+        <button type="submit">Get Weather</button>
+    </form>
+</body>
+</html>
