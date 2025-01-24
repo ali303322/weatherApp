@@ -1,45 +1,108 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recommendations</title>
-    {% load static %}
+    <title>Recommendations for {{ city }}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background: linear-gradient(to bottom, #e8f5e9, #f4f4f4);
         }
-        
+
         header {
             background-color: #4caf50;
             color: white;
-            padding: 1em;
+            padding: 1.5em 1em;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        header a {
+            color: white;
+            text-decoration: underline;
+            font-size: 0.9em;
+        }
+
         main {
             padding: 2em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2em;
         }
-        
+
         section {
-            margin: 1em 0;
-            padding: 1em;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 1.5em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
         }
-        
-        h2 {
+
+        section h2 {
+            color: #4caf50;
+            margin-bottom: 1em;
+        }
+
+        /* Outfit Recommendations */
+        .outfit-section p {
+            font-size: 1.1em;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Activity Recommendations */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .activity-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .activity-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .activity-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .activity-info {
+            padding: 1em;
+        }
+
+        .activity-info h3 {
+            font-size: 1.2em;
+            margin-bottom: 0.5em;
             color: #4caf50;
         }
-        
-        ul {
-            list-style-type: disc;
-            padding-left: 20px;
+
+        .activity-info p {
+            font-size: 1em;
+            color: #555;
         }
     </style>
 </head>
@@ -49,17 +112,26 @@
         <a href="/">Back to Weather</a>
     </header>
     <main>
-        <section>
+        <!-- Outfit Recommendations -->
+        <section class="outfit-section">
             <h2>Outfit Recommendations</h2>
             <p>{{ recommendations.outfit }}</p>
         </section>
-        <section>
+
+        <!-- Activity Recommendations -->
+        <section class="activity-section">
             <h2>Activity Recommendations</h2>
-            <ul>
+            <div class="activities-grid">
                 {% for activity in recommendations.activities %}
-                <li>{{ activity }}</li>
+                <div class="recommendations-card">
+                    <img src="{% static activity.image %}" alt="{{ activity.activity }}" class="activity-image">
+                    <div class="recommendations-info">
+                        <h3>{{ activity.activity }}</h3>
+                        <p>{{ activity.description }}</p>
+                    </div>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
         </section>
     </main>
 </body>

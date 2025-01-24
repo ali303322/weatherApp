@@ -2,35 +2,61 @@ import requests
 import random
 from datetime import datetime, timedelta 
 
-def get_recommendations(weather_data):
-    recommendations = {}
 
+
+def get_recommendations(weather_data):
+    recommendations = {
+        'outfit': '',
+        'activities': []
+    }
+
+    # Outfit recommendations based on temperature
     if weather_data['temperature'] < 10:
         recommendations['outfit'] = "Heavy jacket, gloves, and a scarf."
-        recommendations['activities'] = ["Stay indoors with a book", "Watch movies", "Visit a museum."]
+        recommendations['activities'] = [
+            {'activity': 'Reading', 'description': 'Stay indoors with a good book.', 'image': 'activities/reading.jpg'},
+            {'activity': 'Movies', 'description': 'Watch your favorite movies.', 'image': 'activities/movie.jpg'},
+            {'activity': 'Museum', 'description': 'Visit a local museum.', 'image': 'activities/museum.jpg'},
+        ]
     elif 10 <= weather_data['temperature'] < 20:
         recommendations['outfit'] = "Sweater and comfortable jeans."
-        recommendations['activities'] = ["Go for a walk", "Visit a café", "Explore local attractions."]
+        recommendations['activities'] = [
+            {'activity': 'Walking', 'description': 'Go for a relaxing walk.', 'image': 'activities/walking.jpg'},
+            {'activity': 'Cafe', 'description': 'Visit a cozy café.', 'image': 'activities/cofee.jpg'},
+            {'activity': 'Exploring', 'description': 'Explore local attractions.', 'image': 'activities/exploring.jpg'},
+        ]
     elif weather_data['temperature'] >= 20:
         recommendations['outfit'] = "T-shirt, shorts, and sunglasses."
-        recommendations['activities'] = ["Go to the beach", "Have a picnic", "Play outdoor sports."]
-    
+        recommendations['activities'] = [
+            {'activity': 'Beach', 'description': 'Go to the beach and enjoy the sun.', 'image': 'activities/beach.jpg'},
+            {'activity': 'Picnic', 'description': 'Have a picnic in the park.', 'image': 'activities/picnic.jpg'},
+            {'activity': 'Outdoor Sports', 'description': 'Play outdoor sports with friends.', 'image': 'activities/outdoor.jpg'},
+        ]
+
+    # Adjust recommendations based on weather description
     if "Rain" in weather_data['description']:
         recommendations['outfit'] += " Don't forget a raincoat or umbrella!"
-        recommendations['activities'] = ["Stay indoors and enjoy cozy activities", "Visit a spa."]
+        recommendations['activities'] = [
+            {'activity': 'Cozy Indoors', 'description': 'Stay indoors and enjoy cozy activities.', 'image': 'activities/cozy.jpg'},
+            {'activity': 'Spa', 'description': 'Relax with a spa day.', 'image': 'activities/spa.jpg'},
+        ]
     elif "Snow" in weather_data['description']:
         recommendations['outfit'] += " Boots and thermal wear recommended!"
-        recommendations['activities'] = ["Build a snowman", "Go skiing or snowboarding."]
-    
+        recommendations['activities'] = [
+            {'activity': 'Snowman', 'description': 'Build a snowman with friends.', 'image': 'activities/snowmen.jpg'},
+            {'activity': 'Skiing', 'description': 'Go skiing or snowboarding.', 'image': 'activities/skiing.jpg'},
+        ]
+
     return recommendations
 
+    
 
 def get_weather_data(city, api_key):
     base_url = "http://api.weatherstack.com/current"
     params = {
         'access_key': api_key,
         'query': city,
-        'forecast_days': 5 
+        'forecast_days': 7
     }
     
     try:

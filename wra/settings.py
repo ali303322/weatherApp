@@ -11,14 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-from decouple import config
-
-WEATHER_API_KEY = config('WEATHER_API_KEY')
 
 
-from decouple import config
 
-WEATHER_API_KEY = config('WEATHER_API_KEY', default='8995e033b5f0b5fc6d3906f35633dacc')
+WEATHER_API_KEY = 'bf5214f9154ccedad9143891ae786351'
 
 
 print("Template directories being searched:")
@@ -73,7 +69,7 @@ logging.basicConfig(level=logging.DEBUG)
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "wrs/templates"],  # Ensure this is correct
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,6 +81,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 # In case you want to debug template loading paths
 import django.template.loaders.app_directories
@@ -138,7 +136,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+
+#STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'wrs/static']
+STATIC_URL = '/static/'  
+
+# settings.py
+
+# Media configuration (for uploaded user content like images)
+#MEDIA_URL = '/media/'  # URL for accessing media files
+#MEDIA_ROOT = BASE_DIR / 'media'  # Absolute path to the media directory
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -1,14 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Forecast</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
         /* General Styling */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f4f7;
+            background: linear-gradient(to bottom, #e8f1f8, #f0f4f7);
             color: #333;
             margin: 0;
             padding: 0;
@@ -20,9 +22,11 @@
 
         h1 {
             color: #333;
-            font-size: 2em;
+            font-size: 2.5em;
             margin-top: 20px;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         /* Today's Weather Section */
@@ -30,29 +34,35 @@
             background-color: #ffcc00; /* Default for sunny weather */
             padding: 30px;
             margin: 20px 0;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             width: 80%;
             max-width: 600px;
             text-align: center;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.4s ease, transform 0.2s ease;
+        }
+
+        .today:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .today img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             margin-top: 10px;
         }
 
         .today h2 {
-            font-size: 2em;
+            font-size: 2.5em;
             margin-bottom: 15px;
+            color: #fff;
         }
 
         .today p {
             font-size: 1.2em;
             margin: 5px 0;
-            color: #444;
+            color: #333;
         }
 
         /* 7-Day Forecast Grid */
@@ -67,26 +77,26 @@
 
         .forecast-day {
             background-color: #ffffff;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
         }
 
         .forecast-day:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
         .forecast-day img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             margin-bottom: 10px;
         }
 
         .forecast-day h3 {
-            font-size: 1.3em;
+            font-size: 1.5em;
             margin-bottom: 10px;
             color: #444;
         }
@@ -112,6 +122,19 @@
         .windy {
             background-color: #607d8b; /* Windy */
         }
+        .snowy {
+            background-color: #e0f7fa; /* Light blue for snowy weather */
+        }
+        
+        .stormy {
+            background-color: #9e9e9e; /* Dark gray for storms */
+        }
+        
+        .default {
+            background-color: #f5f5f5; /* Neutral fallback */
+        }
+        
+
         /* Recommendations Button */
         .recommendations-button {
             margin: 20px 0;
@@ -124,16 +147,18 @@
         .recommendations-button button {
             background-color: #4caf50;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 1.2em;
+            font-weight: bold;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .recommendations-button button:hover {
             background-color: #45a049;
+            transform: translateY(-3px);
         }
 
         /* Footer Section */
@@ -147,16 +172,27 @@
         footer a {
             color: #333;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
+        footer a:hover {
+            color: #4caf50;
+        }
+
+        .sunny { background-color: #ffeb3b; }
+        .cloudy { background-color: #cfcfcf; }
+        .rainy { background-color: #00bcd4; }
+        .windy { background-color: #607d8b; }
+        .snowy { background-color: #e0f7fa; }
+        .stormy { background-color: #9e9e9e; }
+        .default { background-color: #f5f5f5; }
+        
     </style>
 </head>
 <body> 
     <!-- Page Title -->
     <h1>Weather in {{ city }}</h1>
     
-   
-
     <!-- Today's Weather Section -->
     <div class="today {{ current_weather.description|lower }}">
         <h2>Today's Weather</h2>
@@ -167,9 +203,9 @@
         <img src="{{ current_weather.icon }}" alt="weather icon">
     </div>
     
-    <!-- 5-Day Forecast Grid -->
+    <!-- 7-Day Forecast Grid -->
+    <h2>7-Day Forecast</h2>
     <div class="forecast-container">
-        <h2>7-Day Forecast</h2>
         {% for day in weather_forecast %}
         <div class="forecast-day {{ day.description|lower }}">
             <h3>{{ day.date }}</h3>
@@ -179,18 +215,17 @@
         </div>
         {% endfor %}
     </div>
+    
+    <!-- Recommendations Button -->
     <div class="recommendations-button">
         <a href="{% url 'recommendations' %}?city={{ city }}">
             <button>Get Recommendations</button>
         </a>
     </div>
     
-   
-
     <!-- Footer Section -->
     <footer>
         <p>&copy; 2025 WeatherApp. <a href="/">Back to home</a></p>
     </footer>
-
 </body>
 </html>
