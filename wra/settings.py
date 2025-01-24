@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+LOGOUT_REDIRECT_URL = 'home'  # Redirect to home page after logout
 
+LOGIN_REDIRECT_URL = 'weather'  # or the view you want to redirect to after login
 
 WEATHER_API_KEY = 'bf5214f9154ccedad9143891ae786351'
 

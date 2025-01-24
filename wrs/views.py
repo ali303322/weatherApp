@@ -1,6 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.conf import settings
 from .utils import get_weather_data, get_weather_forecast,get_recommendations
+from django.urls import reverse
+
+
+
+def home_view(request):  
+    # Render the form with the dropdown
+    return render(request, 'wrs/Base.html')
+
 
 def weather_view(request):
     city = request.GET.get('city', 'London')  # Default city is London

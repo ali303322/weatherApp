@@ -15,7 +15,7 @@
         }
 
         header {
-            background-color: #4caf50;
+            background-color: #007bff;
             color: white;
             padding: 1.5em 1em;
             text-align: center;
@@ -52,7 +52,7 @@
         }
 
         section h2 {
-            color: #4caf50;
+            color: #007bff;
             margin-bottom: 1em;
         }
 
@@ -97,7 +97,7 @@
         .activity-info h3 {
             font-size: 1.2em;
             margin-bottom: 0.5em;
-            color: #4caf50;
+            color: #007bff;
         }
 
         .activity-info p {
@@ -109,7 +109,7 @@
 <body>
     <header>
         <h1>Recommendations for {{ city }}</h1>
-        <a href="/">Back to Weather</a>
+        <a href="{% url 'weather' %}">Back to Weather</a>
     </header>
     <main>
         <!-- Outfit Recommendations -->
